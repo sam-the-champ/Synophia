@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local skill installs (vendored, not app code)
+/.agents
+/.claude
+/agent
