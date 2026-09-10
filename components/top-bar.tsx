@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Bell, ChevronDown, Menu, X } from "lucide-react";
+import { Bell, Menu, X } from "lucide-react";
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -58,16 +59,29 @@ export function TopBar() {
               <Bell className="size-5" />
               <span className="absolute right-2 top-2 size-1.5 rounded-full bg-primary-400" />
             </button>
-            <button
-              type="button"
-              className="flex items-center gap-1.5"
-              aria-label="Account"
-            >
-              <span className="grid size-9 place-items-center rounded-full border border-white/20 bg-gradient-to-br from-primary-400 to-primary-600 text-small font-semibold text-white">
-                JL
-              </span>
-              <ChevronDown className="hidden size-4 text-neutral-400 sm:block" />
-            </button>
+            <Show when="signed-out">
+              <SignInButton mode="modal">
+                <button
+                  type="button"
+                  className="rounded-full px-4 py-1.5 text-small text-neutral-300 hover:text-white"
+                >
+                  Log in
+                </button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <button
+                  type="button"
+                  className="rounded-full bg-gradient-to-br from-primary-500 to-primary-600 px-4 py-1.5 text-small font-medium text-white hover:from-primary-400 hover:to-primary-500"
+                >
+                  Sign up
+                </button>
+              </SignUpButton>
+            </Show>
+            <Show when="signed-in">
+              <UserButton
+                appearance={{ elements: { userButtonAvatarBox: "size-9" } }}
+              />
+            </Show>
 
             {/* mobile toggle */}
             <button
