@@ -73,7 +73,7 @@ export default function HomePage() {
             </h1>
 
             <p className="mt-6 max-w-xl text-body-lg text-neutral-400">
-              Vertex understands what you want to learn and finds the exact
+              Synophia understands what you want to learn and finds the exact
               lessons across all your courses.
             </p>
 
