@@ -60,22 +60,24 @@ export function TopBar() {
               <span className="absolute right-2 top-2 size-1.5 rounded-full bg-primary-400" />
             </button>
             <Show when="signed-out">
-              <SignInButton mode="modal">
-                <button
-                  type="button"
-                  className="rounded-full px-4 py-1.5 text-small text-neutral-300 hover:text-white"
-                >
-                  Log in
-                </button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button
-                  type="button"
-                  className="rounded-full bg-gradient-to-br from-primary-500 to-primary-600 px-4 py-1.5 text-small font-medium text-white hover:from-primary-400 hover:to-primary-500"
-                >
-                  Sign up
-                </button>
-              </SignUpButton>
+              <div className="hidden items-center gap-2 sm:flex">
+                <SignInButton mode="modal">
+                  <button
+                    type="button"
+                    className="whitespace-nowrap rounded-full px-4 py-1.5 text-small text-neutral-300 hover:text-white"
+                  >
+                    Log in
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button
+                    type="button"
+                    className="whitespace-nowrap rounded-full bg-gradient-to-br from-primary-500 to-primary-600 px-4 py-1.5 text-small font-medium text-white hover:from-primary-400 hover:to-primary-500"
+                  >
+                    Sign up
+                  </button>
+                </SignUpButton>
+              </div>
             </Show>
             <Show when="signed-in">
               <UserButton
@@ -115,6 +117,29 @@ export function TopBar() {
                 {label}
               </Link>
             ))}
+
+            <Show when="signed-out">
+              <div className="mt-2 flex flex-col gap-2 border-t border-white/10 pt-3 sm:hidden">
+                <SignInButton mode="modal">
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className="rounded-lg px-3 py-2.5 text-left text-body text-neutral-400 hover:bg-white/5 hover:text-neutral-100"
+                  >
+                    Log in
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className="rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 px-3 py-2.5 text-center text-body font-medium text-white hover:from-primary-400 hover:to-primary-500"
+                  >
+                    Sign up
+                  </button>
+                </SignUpButton>
+              </div>
+            </Show>
           </nav>
         )}
       </div>
