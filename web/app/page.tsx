@@ -1,47 +1,14 @@
 import Link from "next/link";
-import { Sparkles, ArrowRight, Search, Star, Container } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Sparkles, ArrowRight, Search, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CoursePreviewCard } from "@/components/ui/course-preview-card";
 import { TopBar } from "@/components/top-bar";
+import { getCourses } from "@/sanity/lib/courses";
+import { formatDuration, capitalize } from "@/lib/format";
 
-/* ---------- placeholder content (swap for a GROQ fetch later) ---------- */
+export default async function HomePage() {
+  const courses = await getCourses();
 
-const COURSES = [
-  {
-    title: "Next.js for Production",
-    description:
-      "Build scalable, high-performance web applications with Next.js.",
-    level: "Intermediate",
-    duration: "18h 24m",
-    modules: "12 modules",
-    icon: <span>N</span>,
-    iconClassName: "bg-black",
-  },
-  {
-    title: "Docker Essentials",
-    description:
-      "Containerize applications and streamline your development workflow.",
-    level: "Beginner",
-    duration: "10h 12m",
-    modules: "8 modules",
-    icon: <Container className="size-7" />,
-    iconClassName: "bg-gradient-to-br from-sky-500 to-primary-600",
-  },
-  {
-    title: "TypeScript Deep Dive",
-    description: "Go beyond the basics and write safer, more expressive code.",
-    level: "Intermediate",
-    duration: "14h 36m",
-    modules: "10 modules",
-    icon: <span className="text-body-lg">TS</span>,
-    iconClassName: "bg-gradient-to-br from-blue-500 to-blue-600",
-  },
-];
-
-/* ---------- page ---------- */
-
-export default function HomePage() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-neutral-900">
       {/* aurora background */}
@@ -118,12 +85,16 @@ export default function HomePage() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {COURSES.map(({ icon, iconClassName, ...c }) => (
+              {courses.map((course) => (
                 <CoursePreviewCard
-                  key={c.title}
-                  icon={icon}
-                  iconClassName={cn("text-heading-2", iconClassName)}
-                  {...c}
+                  key={course._id}
+                  slug={course.slug ?? ""}
+                  coverImage={course.coverImage ?? null}
+                  title={course.title ?? ""}
+                  description={course.summary ?? ""}
+                  level={capitalize(course.level ?? "beginner")}
+                  duration={formatDuration(course.totalSeconds ?? 0)}
+                  modules={`${course.moduleCount ?? 0} modules`}
                 />
               ))}
             </div>
