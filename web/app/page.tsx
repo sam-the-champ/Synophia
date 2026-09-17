@@ -7,7 +7,7 @@ import { getCourses } from "@/sanity/lib/courses";
 import { formatDuration, capitalize } from "@/lib/format";
 
 export default async function HomePage() {
-  const courses = await getCourses();
+  const courses = (await getCourses()).slice(0, 3);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-neutral-900">
@@ -76,7 +76,7 @@ export default async function HomePage() {
                 All Courses
               </h2>
               <Link
-                href="#"
+                href="/courses"
                 className="inline-flex shrink-0 items-center gap-1.5 text-small text-primary-400 hover:text-primary-300"
               >
                 View all courses
