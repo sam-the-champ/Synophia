@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Bell, Menu, X } from "lucide-react";
 import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { label: "Courses", href: "#", active: true },
-  { label: "My Learning", href: "#", active: false },
+  { label: "Courses", href: "/courses" },
+  { label: "My Learning", href: "#" },
 ];
 
 function Logo() {
@@ -24,6 +25,7 @@ function Logo() {
 
 export function TopBar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-40 px-4 pt-4 sm:px-6">
@@ -33,21 +35,24 @@ export function TopBar() {
 
           {/* desktop nav */}
           <nav className="ml-4 hidden items-center gap-2 text-small md:flex">
-            {NAV.map(({ label, href, active }) => (
-              <Link
-                key={label}
-                href={href}
-                aria-current={active ? "page" : undefined}
-                className={cn(
-                  "rounded-full px-4 py-1.5",
-                  active
-                    ? "bg-white/10 font-medium text-white"
-                    : "text-neutral-400 hover:text-neutral-100",
-                )}
-              >
-                {label}
-              </Link>
-            ))}
+            {NAV.map(({ label, href }) => {
+              const active = href !== "#" && pathname.startsWith(href);
+              return (
+                <Link
+                  key={label}
+                  href={href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "rounded-full px-4 py-1.5",
+                    active
+                      ? "bg-white/10 font-medium text-white"
+                      : "text-neutral-400 hover:text-neutral-100",
+                  )}
+                >
+                  {label}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="ml-auto flex items-center gap-2 sm:gap-3">
@@ -101,22 +106,25 @@ export function TopBar() {
         {/* mobile nav panel */}
         {open && (
           <nav className="flex flex-col gap-1 border-t border-white/10 p-3 md:hidden">
-            {NAV.map(({ label, href, active }) => (
-              <Link
-                key={label}
-                href={href}
-                onClick={() => setOpen(false)}
-                aria-current={active ? "page" : undefined}
-                className={cn(
-                  "rounded-lg px-3 py-2.5 text-body",
-                  active
-                    ? "bg-white/10 font-medium text-white"
-                    : "text-neutral-400 hover:bg-white/5 hover:text-neutral-100",
-                )}
-              >
-                {label}
-              </Link>
-            ))}
+            {NAV.map(({ label, href }) => {
+              const active = href !== "#" && pathname.startsWith(href);
+              return (
+                <Link
+                  key={label}
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "rounded-lg px-3 py-2.5 text-body",
+                    active
+                      ? "bg-white/10 font-medium text-white"
+                      : "text-neutral-400 hover:bg-white/5 hover:text-neutral-100",
+                  )}
+                >
+                  {label}
+                </Link>
+              );
+            })}
 
             <Show when="signed-out">
               <div className="mt-2 flex flex-col gap-2 border-t border-white/10 pt-3 sm:hidden">
