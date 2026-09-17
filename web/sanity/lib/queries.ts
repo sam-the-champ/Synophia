@@ -18,7 +18,7 @@ const LESSON_REF_PROJECTION = /* groq */ `{
   _id,
   title,
   "slug": slug.current,
-  poster,
+  "poster": coalesce(poster, thumbnail),
   duration,
   freePreview,
   studentCount
@@ -32,6 +32,8 @@ export const COURSE_BY_SLUG_QUERY = defineQuery(`
   *[_type == "course" && slug.current == $slug][0]{
     ...,
     "slug": slug.current,
+    "whatYoullLearn": coalesce(whatYoullLearn, learningOutcomes),
+    "totalSeconds": math::sum(modules[].lessons[]->duration),
     "instructor": instructor->{ name, "slug": slug.current, photo, expertise, bio },
     "category": category->{ title, "slug": slug.current },
     modules[]{
