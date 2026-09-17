@@ -1,18 +1,20 @@
-import type { ReactNode } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { BarChart3, Clock, FileText } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { urlFor } from "@/sanity/lib/image";
+import type { SanityImageSource } from "@sanity/image-url";
 
 export function CoursePreviewCard({
-  icon,
-  iconClassName,
+  slug,
+  coverImage,
   title,
   description,
   level,
   duration,
   modules,
 }: {
-  icon: ReactNode;
-  iconClassName?: string;
+  slug: string;
+  coverImage: SanityImageSource | null;
   title: string;
   description: string;
   level: string;
@@ -20,14 +22,20 @@ export function CoursePreviewCard({
   modules: string;
 }) {
   return (
-    <article className="flex flex-col rounded-xl border border-white/10 bg-neutral-800/30 p-5 shadow-[0_0_40px_-12px_rgba(99,102,241,0.35)] transition-colors hover:border-primary-500/50">
-      <div
-        className={cn(
-          "grid size-14 place-items-center rounded-xl text-heading-3 font-bold text-white",
-          iconClassName,
+    <Link
+      href={`/courses/${slug}`}
+      className="flex flex-col rounded-xl border border-white/10 bg-neutral-800/30 p-5 shadow-[0_0_40px_-12px_rgba(99,102,241,0.35)] transition-colors hover:border-primary-500/50"
+    >
+      <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-neutral-900">
+        {coverImage && (
+          <Image
+            src={urlFor(coverImage).width(400).height(225).fit("crop").url()}
+            alt={`Cover image for ${title}`}
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            className="object-cover"
+          />
         )}
-      >
-        {icon}
       </div>
 
       <h3 className="mt-5 text-heading-3 font-semibold text-white">{title}</h3>
@@ -47,6 +55,6 @@ export function CoursePreviewCard({
           {modules}
         </span>
       </div>
-    </article>
+    </Link>
   );
 }
